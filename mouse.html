@@ -1,0 +1,113 @@
+<!-- Abhinav Rai's production -->
+<html>
+<head><title>Control your hand :P </title>
+<script src="jquery.txt"></script>
+<script>
+var block=[];// or block= new Array();
+var count=0;
+
+function draw(x1,y1,wid,hei,color){
+var c=document.getElementById("test");
+count++;
+var ctx=c.getContext("2d");
+ctx.fillStyle=color;
+ctx.fillRect(x1,y1,wid,hei);
+if(count!=1){
+block.push({x_one:x1+9,y_one:y1+9,x_two:x1+wid+9,y_two:y1+hei+9});}
+console.log(block);
+console.log(count);
+/*Doubt : why block[0].x_one will not work here while it will work at other script at down. Same goes with the canvas declaration at the bottom script. Basically how is this document executed.*/
+}
+
+</script>
+</head>
+
+<body bgcolor="black" >
+<div style="cursor:crosshair">
+<canvas id="test" width="1000" height="560">Does not support</canvas>
+<button id="start1" onmousedown="start2()">Start</button>
+<input type="button" value="Finish" id="finish1" onclick="practice()" />
+</div>
+<div>
+<h1><font color="yellow">Level 1</font></h1>
+</div>
+</body>
+
+<script>
+draw(0,0,1000,560,"green");
+draw(10,10,30,250,"black");
+draw(10,300,30,250,"black");
+draw(70,0,40,530,"black");
+draw(100,400,800,30,"black");
+draw(150,350,850,30,"black");
+
+
+var X,Y;
+var d=document.getElementById("start1");
+d.style.position="absolute";
+d.style.left=10;
+d.style.top=280;
+var e=document.getElementById("finish1");
+e.style.position="absolute";
+e.style.left=950;
+e.style.top=280;
+document.getElementById("finish1").disabled = true;
+  $(document).mousemove(function(event) {
+        X = event.pageX;
+        Y = event.pageY;
+        //console.log(X+" "+Y);
+    });
+var start=0;
+function start2()
+{
+	if(start==0)
+	{start=1;document.getElementById("finish1").disabled = false;}
+	else location.reload();
+}
+
+function practice()
+{window.open  ("level2.html","_self");
+
+}
+
+function check()
+{
+	if(start!=0)
+	{var c1=document.getElementById("test");
+ctx=c1.getContext("2d");
+ctx.font='20pt Calibri';
+ctx.fillText("Game started",150,50);
+	var flag=0;
+    for (var i=0;i<count-1;i++)
+    {
+    	if(X>block[i].x_one&&X<block[i].x_two&&Y>block[i].y_one&&Y<block[i].y_two)
+    		{flag=1;break;}
+    }
+    if(X<0||X>1000||Y<0||Y>560)
+    	flag=1;
+    if(flag==1){
+    	game_over();
+    }
+    }
+}
+
+function game_over()
+{
+
+clearInterval(threading);
+document.getElementById("finish1").disabled = true;
+var c1=document.getElementById("test");
+ctx=c1.getContext("2d");
+ctx.font='20pt Calibri';
+ctx.fillText("Game Over. Press F5 or start button twice to Play again.",250,280); /*Make a button of play again. Also make boxes comiing from down. Also make it control by keyboard option.*/
+window.alert("Game Over");
+}
+
+var threading=setInterval(function() {
+					check();
+				}, 1000/60)
+
+
+
+</script>
+</html>
